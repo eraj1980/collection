@@ -6,19 +6,24 @@ st.set_page_config(layout="centered")
 st.markdown("""
     <style>
     .block-container {max-width: 580px !important; margin: auto;}
+    .center-text {text-align: center;}
     </style>
 """, unsafe_allow_html=True)
 
-# Banner and Hindi content
+# Banner image
 st.image("banner.png", use_container_width=True)
-st.markdown('<h2 style="color:#0a2755; font-size:1.4rem; margin-top:8px; margin-bottom:18px;">मीरा-भाईंदर</h2>', unsafe_allow_html=True)
+
+# Centered "मीरा-भाईंदर" below banner
+st.markdown('<h2 class="center-text" style="color:#0a2755; font-size:1.4rem; margin-top:8px; margin-bottom:18px;">मीरा-भाईंदर</h2>', unsafe_allow_html=True)
+
+# Content image and description remain as before
 st.image("content.png", use_container_width=True)
 
 st.write(
     "मिरा-भाईंदर शहर दिन प्रतिदिन विकसित होता एक बड़ा उपनगर है। इसके सर्वांगीण विकास में समाज के हर वर्ग के साथ-साथ शिक्षकों का भी महत्वपूर्ण योगदान रहा है।"
 )
 
-# Compact English survey form
+# Survey form title centered
 st.markdown('<h3 style="text-align:center;margin-top:1.2em;">Register Your Support</h3>', unsafe_allow_html=True)
 
 with st.form("support_form"):
@@ -44,6 +49,7 @@ with st.form("support_form"):
         sector = st.text_input("Sector Number")
 
     st.markdown("<div style='font-weight:600;text-align:center;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
+
     consent = st.checkbox("I support")
 
     submitted = st.form_submit_button("Submit Support")
