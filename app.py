@@ -6,24 +6,37 @@ st.set_page_config(layout="centered")
 st.markdown("""
     <style>
     .block-container {max-width: 580px !important; margin: auto;}
-    .center-text {text-align: center;}
+    .center-big {
+        text-align: center;
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #114688;
+        letter-spacing: 2px;
+        margin: 20px 0 12px 0;
+    }
+    .thick-line {
+        border: none;
+        border-top: 4px solid #0a2755;
+        margin-bottom: 22px;
+        margin-top: 4px;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
     </style>
 """, unsafe_allow_html=True)
 
 # Banner image
 st.image("banner.png", use_container_width=True)
 
-# Centered "मीरा-भाईंदर" below banner
-st.markdown('<h2 class="center-text" style="color:#0a2755; font-size:1.4rem; margin-top:8px; margin-bottom:18px;">मीरा-भाईंदर</h2>', unsafe_allow_html=True)
+# Large centered Mira-Bhayandar below banner
+st.markdown('<div class="center-big">मीरा-भाईंदर</div>', unsafe_allow_html=True)
+st.markdown('<hr class="thick-line">', unsafe_allow_html=True)
 
-# Content image and description remain as before
+# Single content image (no extra duplicated text)
 st.image("content.png", use_container_width=True)
 
-st.write(
-    "मिरा-भाईंदर शहर दिन प्रतिदिन विकसित होता एक बड़ा उपनगर है। इसके सर्वांगीण विकास में समाज के हर वर्ग के साथ-साथ शिक्षकों का भी महत्वपूर्ण योगदान रहा है।"
-)
-
-# Survey form title centered
+# Survey form
 st.markdown('<h3 style="text-align:center;margin-top:1.2em;">Register Your Support</h3>', unsafe_allow_html=True)
 
 with st.form("support_form"):
