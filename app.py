@@ -1,148 +1,99 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import requests
 
 st.set_page_config(layout="centered")
 
+# ---- Custom CSS for centering, color, font, spacing ----
 st.markdown("""
 <style>
-.block-container {max-width: 580px !important; margin: auto;}
-.center-big {
-    text-align: center;
-    font-size: 2.3rem;
-    font-weight: 700;
-    color: #114688;
-    letter-spacing: 2px;
-    margin: 20px 0 12px 0;
-}
-.thick-line {
-    border: none;
-    border-top: 4px solid #0a2755;
-    margin-bottom: 22px;
-    margin-top: 4px;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
+.block-container { max-width: 480px !important; margin: auto; }
+.bigtitle {text-align:center; font-size:2.2rem; font-weight:700; color:#114688; letter-spacing:1px; margin-bottom:0.6em;}
+.thick-line {border:none; border-top:4px solid #0a2755; margin-bottom:18px; width:90%; margin-left:auto; margin-right:auto;}
+.compact-input input, .compact-input select { height:36px; font-size:1rem; }
+.radio-row div[role=radiogroup] { display:flex !important; gap:38px; justify-content:center; }
+.center-row {display:flex; justify-content:center; align-items:center; gap:18px;}
+.stButton > button {background-color:#0a2755; color:white; font-weight:700; font-family: Arial,sans-serif; border:none; width:200px; height:42px; border-radius:8px; margin:8px auto;}
+.stButton > button:hover {background-color:#1842a7;}
 </style>
 """, unsafe_allow_html=True)
 
-# Banner and Mira-Bhayandar
+# ---- Top Hindi Banner and Heading (centered) ----
 st.image("banner.png", use_container_width=True)
-st.markdown('<div class="center-big">मीरा-भाईंदर</div>', unsafe_allow_html=True)
+st.markdown('<div class="bigtitle">मीरा-भाईंदर</div>', unsafe_allow_html=True)
 st.markdown('<hr class="thick-line">', unsafe_allow_html=True)
+
 st.image("content.png", use_container_width=True)
 
-st.markdown('<h3 style="text-align:center;margin-top:1em;">Register Your Support</h3>', unsafe_allow_html=True)
+# ---- English Survey Form Compact and Grouped ----
+st.markdown('<h3 style="text-align:center;margin-top:0.2em;margin-bottom:0.8em;">Register Your Support</h3>', unsafe_allow_html=True)
 
-# Collect other fields with Streamlit widgets
-first_name = st.text_input("First Name")
-surname = st.text_input("Surname")
-mobile = st.text_input("Mobile Number (10 digits)")
-age = st.number_input("Age", min_value=18, max_value=120)
-email = st.text_input("Email Address")
-flat = st.text_input("Flat Number")
-building = st.text_input("Building Number")
-society = st.text_input("Society Name")
-sector = st.text_input("Sector Number")
+with st.form("support_form"):
+    # Name row
+    fn_col, sn_col = st.columns([1,1])
+    with fn_col:
+        first_name = st.text_input("First Name")
+    with sn_col:
+        surname = st.text_input("Surname")
 
-st.markdown("<div style='font-weight:600;text-align:center;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
+    # Gender row, horizontal radio
+    st.markdown('<div class="radio-row">', unsafe_allow_html=True)
+    gender = st.radio("Gender", ["Male", "Female", "Other"], horizontal=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# Custom HTML block for horizontal radio and centered checkbox + submit button
-html_code = """
-<div style="text-align:center; margin-top: 20px;">
-  <label style="font-weight:600;">Gender</label><br>
-  <input type="radio" id="male" name="gender" value="Male" checked>
-  <label for="male" style="margin-right:15px;">Male</label>
-  <input type="radio" id="female" name="gender" value="Female">
-  <label for="female" style="margin-right:15px;">Female</label>
-  <input type="radio" id="other" name="gender" value="Other">
-  <label for="other">Other</label>
+    # Mobile, age
+    mob_col, age_col = st.columns([2,1])
+    with mob_col:
+        mobile = st.text_input("Mobile Number (10 digits)")
+    with age_col:
+        age = st.number_input("Age", min_value=18, max_value=120)
 
-  <br><br>
-  <input type="checkbox" id="consent" name="consent" style="display:inline-block; vertical-align:middle; width: auto;">
-  <label for="consent" style="font-weight:600; display:inline-block; vertical-align:middle;">I support</label>
+    email = st.text_input("Email Address")
 
-  <br><br>
-  <button id="submitBtn" style="
-    background-color:#0a2755; 
-    color:white; 
-    font-weight:bold; 
-    border:none; 
-    padding: 12px 35px; 
-    border-radius:8px; 
-    cursor:pointer;
-    font-family: Arial, sans-serif;
-    font-size: 1rem;
-  ">Submit Support</button>
-</div>
+    # Flat + Building row
+    flat_col, build_col = st.columns([1,1])
+    with flat_col:
+        flat = st.text_input("Flat Number")
+    with build_col:
+        building = st.text_input("Building Number")
 
-<script>
-  const submitBtn = document.getElementById('submitBtn');
-  submitBtn.addEventListener('click', () => {
-    const genderElems = document.getElementsByName('gender');
-    let gender = null;
-    for (const elem of genderElems) {
-      if (elem.checked) { gender = elem.value; break; }
-    }
-    const consentChecked = document.getElementById('consent').checked;
+    # Society + Sector row
+    soc_col, sec_col = st.columns([1,1])
+    with soc_col:
+        society = st.text_input("Society Name")
+    with sec_col:
+        sector = st.text_input("Sector Number")
 
-    if (!gender) {
-      alert('Please select gender.');
-      return;
-    }
-    if (!consentChecked) {
-      alert('Please check "I support" checkbox.');
-      return;
-    }
+    st.markdown("<div style='font-weight:600;text-align:center;margin-top:10px;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
 
-    // send data back to Streamlit via window.parent.postMessage
-    window.parent.postMessage({
-      isFromStreamlit: true,
-      genderSelected: gender,
-      consentChecked: consentChecked,
-      clickedSubmit: true
-    }, '*');
-  });
-</script>
-"""
+    # Consent checkbox and submit button centered together
+    col_c1, col_c2, col_c3 = st.columns([1,2,1])
+    with col_c2:
+        consent = st.checkbox("I support")
+        submitted = st.form_submit_button("Submit Support")
 
-# Embed the HTML component
-msg = components.html(html_code, height=160)
-
-# Sync values back from HTML via Streamlit's onMessage
-gender = st.session_state.get("gender", None)
-consent = st.session_state.get("consent", False)
-
-# Listen for messages from HTML (handled below when used in Streamlit sharing)
-
-# Process form submission combining HTML + Streamlit inputs
-def handle_submit():
-    if not all([first_name, surname, mobile, age, email, flat, building, society, sector, consent]):
-        st.error("Fill all fields and check the consent box.")
-        return
-    data = {
-        "first_name": first_name,
-        "surname": surname,
-        "gender": gender,
-        "mobile": mobile,
-        "age": age,
-        "email": email,
-        "flat": flat,
-        "building": building,
-        "society": society,
-        "sector": sector,
-        "consent": "Yes" if consent else "No"
-    }
-    script_url = 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL'
-    try:
-        res = requests.post(script_url, data=data)
-        if res.status_code == 200:
-            st.success("Thank you! Your support has been recorded.")
+    if submitted:
+        if not all([first_name, surname, gender, mobile, age, email, flat, building, society, sector, consent]):
+            st.error("Please fill in all fields and check the 'I support' box.")
         else:
-            st.error(f"Submission failed! Status: {res.status_code}")
-    except Exception as e:
-        st.error(f"Error sending data: {str(e)}")
-
-# Button to handle submission after receiving events from HTML (could be triggered from JS)
-st.button("Finalize Submit", on_click=handle_submit)
+            data = {
+                "first_name": first_name,
+                "surname": surname,
+                "gender": gender,
+                "mobile": mobile,
+                "age": age,
+                "email": email,
+                "flat": flat,
+                "building": building,
+                "society": society,
+                "sector": sector,
+                "consent": "Yes"
+            }
+            script_url = 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL'
+            try:
+                res = requests.post(script_url, data=data)
+                if res.status_code == 200:
+                    st.success("Thank you! Your support has been recorded.")
+                else:
+                    st.error(f"Submission failed! Status: {res.status_code}")
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
