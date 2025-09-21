@@ -67,7 +67,7 @@ with st.form("support_form"):
                 "sector": sector,
                 "consent": "Yes"
             }
-            script_url = 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL'
+            script_url = 'https://script.google.com/macros/s/AKfycbyL5VUyINaVinfQfM1BvxJv7zJafBYxshYB7mN38cMzW7lVp_GXXvDvAOKbpfkqt_yT5Q/exec'
             try:
                 res = requests.post(script_url, data=data)
                 if res.status_code == 200:
@@ -76,3 +76,4 @@ with st.form("support_form"):
                     st.error(f"Submission failed! Status: {res.status_code}")
             except Exception as e:
                 st.error(f"Error: {str(e)}")
+
