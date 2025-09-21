@@ -1,41 +1,35 @@
 import streamlit as st
 import requests
 
-st.set_page_config(page_title="Sakal Shikshak Samaj", layout="centered")
+st.set_page_config(layout="centered")
 
 st.markdown("""
-<style>
-.block-container {
-    max-width: 580px !important;
-    margin: auto;
-}
-</style>
+    <style>
+    .block-container {max-width: 580px !important; margin: auto;}
+    </style>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown('<h1 style="color:#cd2d01;font-size:3rem;letter-spacing:1px;text-shadow:2px 2px #222;">Sakal Shikshak Samaj</h1>', unsafe_allow_html=True)
-st.markdown('<h2 style="color:#0a2755; font-size:1.4rem; margin-bottom:20px;">Meera-Bhayandar</h2>', unsafe_allow_html=True)
+# Banner and Hindi content
 st.image("banner.png", use_container_width=True)
+st.markdown('<h2 style="color:#0a2755; font-size:1.4rem; margin-top:8px; margin-bottom:18px;">मीरा-भाईंदर</h2>', unsafe_allow_html=True)
 st.image("content.png", use_container_width=True)
 
 st.write(
-    "Meera-Bhayandar city is rapidly developing into a big suburb. "
-    "Its comprehensive development has seen important contributions from all social classes including teachers."
+    "मिरा-भाईंदर शहर दिन प्रतिदिन विकसित होता एक बड़ा उपनगर है। इसके सर्वांगीण विकास में समाज के हर वर्ग के साथ-साथ शिक्षकों का भी महत्वपूर्ण योगदान रहा है।"
 )
 
-# Centered form title
-st.markdown('<h3 style="text-align:center;margin-top:1em;">Register Your Support</h3>', unsafe_allow_html=True)
+# Compact English survey form
+st.markdown('<h3 style="text-align:center;margin-top:1.2em;">Register Your Support</h3>', unsafe_allow_html=True)
 
-# Form
 with st.form("support_form"):
     col1, col2 = st.columns(2)
     with col1:
-        name = st.text_input("Name", max_chars=50)
+        name = st.text_input("Name")
     with col2:
         age = st.number_input("Age", min_value=18, max_value=120)
 
-    mobile = st.text_input("Mobile Number (10 digits)", max_chars=10)
-    email = st.text_input("Email ID")
+    mobile = st.text_input("Mobile Number (10 digits)")
+    email = st.text_input("Email Address")
 
     col3, col4 = st.columns(2)
     with col3:
@@ -49,14 +43,13 @@ with st.form("support_form"):
     with col6:
         sector = st.text_input("Sector Number")
 
-    st.markdown("<div style='font-weight: 600; text-align: center;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
-
+    st.markdown("<div style='font-weight:600;text-align:center;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
     consent = st.checkbox("I support")
 
     submitted = st.form_submit_button("Submit Support")
     if submitted:
         if not all([name, age, mobile, email, flat, building, society, sector, consent]):
-            st.error("Please fill in all fields and check the I support box.")
+            st.error("Please fill in all fields and check the 'I support' box.")
         else:
             data = {
                 "name": name,
@@ -75,6 +68,6 @@ with st.form("support_form"):
                 if res.status_code == 200:
                     st.success("Thank you! Your support has been recorded.")
                 else:
-                    st.error(f"Submission failed with status: {res.status_code}")
+                    st.error(f"Submission failed! Status: {res.status_code}")
             except Exception as e:
-                st.error(f"An error occurred: {e}")
+                st.error(f"Error: {str(e)}")
