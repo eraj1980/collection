@@ -6,7 +6,8 @@ st.set_page_config(layout="centered")
 st.markdown("""
     <style>
     .block-container {
-        max-width: 580px !important; margin: auto;
+        max-width: 580px !important; 
+        margin: auto;
     }
     .center-big {
         text-align: center;
@@ -25,31 +26,36 @@ st.markdown("""
         margin-left: auto;
         margin-right: auto;
     }
-    .submit-button {
-        background-color: #0a2755;
-        color: white;
-        font-weight: 700;
-        font-family: Arial, sans-serif;
-        padding: 12px 0;
-        width: 200px;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        margin: 10px auto;
-        display: block;
-    }
-    .submit-button:hover {
-        background-color: #0a1f3d;
-    }
     .checkbox-container {
         text-align: center;
         margin-top: 15px;
         margin-bottom: 12px;
     }
+    div.stButton > button:first-child {
+        background-color: #0a2755;
+        color: white;
+        font-weight: 700;
+        font-family: Arial, sans-serif;
+        width: 220px;
+        height: 44px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        display: block;
+        margin: 15px auto;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #0a1f3d;
+    }
+    /* Custom horizontal radio buttons */
+    .horizontal-radio .stRadio > div {
+        display: flex;
+        gap: 30px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Banner and Mira-Bhayandar
+# Banner and Mira-Bhayandar text
 st.image("banner.png", use_container_width=True)
 st.markdown('<div class="center-big">मीरा-भाईंदर</div>', unsafe_allow_html=True)
 st.markdown('<hr class="thick-line">', unsafe_allow_html=True)
@@ -57,7 +63,7 @@ st.markdown('<hr class="thick-line">', unsafe_allow_html=True)
 # Content image
 st.image("content.png", use_container_width=True)
 
-# Form heading
+# Survey Form Title
 st.markdown('<h3 style="text-align:center;margin-top:1em;">Register Your Support</h3>', unsafe_allow_html=True)
 
 with st.form("support_form"):
@@ -67,7 +73,10 @@ with st.form("support_form"):
     with col2:
         surname = st.text_input("Surname")
 
+    # Gender radio buttons horizontally
+    st.markdown('<div class="horizontal-radio">', unsafe_allow_html=True)
     gender = st.radio("Gender", ("Male", "Female", "Other"))
+    st.markdown('</div>', unsafe_allow_html=True)
 
     mobile = st.text_input("Mobile Number (10 digits)")
     age = st.number_input("Age", min_value=18, max_value=120)
@@ -87,13 +96,13 @@ with st.form("support_form"):
 
     st.markdown("<div style='font-weight:600;text-align:center;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
 
-    # Consent checkbox centered
+    # Centered consent checkbox
     st.markdown('<div class="checkbox-container">', unsafe_allow_html=True)
     consent = st.checkbox("I support")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Centered submit button with styled CSS
-    submitted = st.form_submit_button("Submit Support", key="submit_button", help="Click to submit", on_click=None)
+    submitted = st.form_submit_button("Submit Support")
+
     if submitted:
         if not all([first_name, surname, gender, mobile, age, email, flat, building, society, sector, consent]):
             st.error("Please fill in all fields and check the 'I support' box.")
@@ -120,25 +129,3 @@ with st.form("support_form"):
                     st.error(f"Submission failed! Status: {res.status_code}")
             except Exception as e:
                 st.error(f"Error: {str(e)}")
-
-# Custom styled button injection (Streamlit form buttons have limited direct CSS styling)
-st.markdown("""
-<style>
-div.stButton > button:first-child {
-    background-color: #0a2755;
-    color: white;
-    font-weight: 700;
-    font-family: Arial, sans-serif;
-    width: 220px;
-    height: 44px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    display: block;
-    margin: 15px auto;
-}
-div.stButton > button:first-child:hover {
-    background-color: #0a1f3d;
-}
-</style>
-""", unsafe_allow_html=True)
