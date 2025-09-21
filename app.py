@@ -26,11 +26,6 @@ st.markdown("""
         margin-left: auto;
         margin-right: auto;
     }
-    .checkbox-container {
-        text-align: center;
-        margin-top: 15px;
-        margin-bottom: 12px;
-    }
     div.stButton > button:first-child {
         background-color: #0a2755;
         color: white;
@@ -47,10 +42,15 @@ st.markdown("""
     div.stButton > button:first-child:hover {
         background-color: #0a1f3d;
     }
-    /* Custom horizontal radio buttons */
-    .horizontal-radio .stRadio > div {
-        display: flex;
-        gap: 30px;
+    .checkbox-container {
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 12px;
+    }
+    /* Custom horizontal radio group */
+    .horizontal-radio div[role="radiogroup"] > div {
+        display: flex !important;
+        gap: 40px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -73,7 +73,7 @@ with st.form("support_form"):
     with col2:
         surname = st.text_input("Surname")
 
-    # Gender radio buttons horizontally
+    # Horizontal radio buttons for gender
     st.markdown('<div class="horizontal-radio">', unsafe_allow_html=True)
     gender = st.radio("Gender", ("Male", "Female", "Other"))
     st.markdown('</div>', unsafe_allow_html=True)
