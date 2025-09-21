@@ -1,60 +1,62 @@
 import streamlit as st
 import requests
 
-# --- Page Config ---
-st.set_page_config(page_title="सकल शिक्षक समाज", layout="centered")
+st.set_page_config(page_title="Sakal Shikshak Samaj", layout="centered")
 
-# --- Custom Style for compactness/center ---
 st.markdown("""
-    <style>
-    .block-container {max-width: 580px !important; margin: auto;}
-    .css-1kyxreq {padding-top: 12px;}
-    .stTextInput > div > input {text-align: left;}
-    .stNumberInput input {text-align: left;}
-    </style>
+<style>
+.block-container {
+    max-width: 580px !important;
+    margin: auto;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# --- Heading and Images ---
-st.markdown('<h1 style="color:#cd2d01;font-size:3rem;letter-spacing:1px;text-shadow:2px 2px #222;">सकल शिक्षक समाज</h1>', unsafe_allow_html=True)
-st.markdown('<h2 style="color:#0a2755; font-size:1.4rem;">मीरा-भाईंदर</h2>', unsafe_allow_html=True)
-st.image("banner.png", use_column_width=True)
-st.image("content.png", use_column_width=True)
-st.write("""
-मिरा-भाईंदर शहर दिन प्रतिदिन विकसित होता एक बड़ा उपनगर है। इसके सर्वांगीण विकास में समाज के हर वर्ग के साथ-साथ शिक्षकों का भी महत्वपूर्ण योगदान रहा है।
-""")
+# Header
+st.markdown('<h1 style="color:#cd2d01;font-size:3rem;letter-spacing:1px;text-shadow:2px 2px #222;">Sakal Shikshak Samaj</h1>', unsafe_allow_html=True)
+st.markdown('<h2 style="color:#0a2755; font-size:1.4rem; margin-bottom:20px;">Meera-Bhayandar</h2>', unsafe_allow_html=True)
+st.image("banner.png", use_container_width=True)
+st.image("content.png", use_container_width=True)
 
-# --- Compact Support Form ---
-st.markdown('<h3 style="margin-top:1em;">आपका समर्थन दर्ज करें</h3>', unsafe_allow_html=True)
+st.write(
+    "Meera-Bhayandar city is rapidly developing into a big suburb. "
+    "Its comprehensive development has seen important contributions from all social classes including teachers."
+)
 
+# Centered form title
+st.markdown('<h3 style="text-align:center;margin-top:1em;">Register Your Support</h3>', unsafe_allow_html=True)
+
+# Form
 with st.form("support_form"):
     col1, col2 = st.columns(2)
     with col1:
-        name = st.text_input("नाम:", key="name", max_chars=50)
+        name = st.text_input("Name", max_chars=50)
     with col2:
-        age = st.number_input("उम्र:", min_value=18, max_value=120, key="age")
+        age = st.number_input("Age", min_value=18, max_value=120)
 
-    mobile = st.text_input("मोबाइल नंबर (10 digits):", max_chars=10)
-    email = st.text_input("ईमेल आईडी:")
+    mobile = st.text_input("Mobile Number (10 digits)", max_chars=10)
+    email = st.text_input("Email ID")
 
     col3, col4 = st.columns(2)
     with col3:
-        flat = st.text_input("फ्लैट नंबर:")
+        flat = st.text_input("Flat Number")
     with col4:
-        building = st.text_input("बिल्डिंग नंबर:")
+        building = st.text_input("Building Number")
 
     col5, col6 = st.columns(2)
     with col5:
-        society = st.text_input("सोसाइटी का नाम:")
+        society = st.text_input("Society Name")
     with col6:
-        sector = st.text_input("सेक्टर नंबर:")
+        sector = st.text_input("Sector Number")
 
-    st.markdown("<div style='font-weight:600;text-align:center;'>म Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
-    consent = st.checkbox("मैं समर्थन करता/करती हूँ (I support)")
+    st.markdown("<div style='font-weight: 600; text-align: center;'>Mira Road (East), Thane - 401107</div>", unsafe_allow_html=True)
 
-    submitted = st.form_submit_button("समर्थन दर्ज करें")
+    consent = st.checkbox("I support")
+
+    submitted = st.form_submit_button("Submit Support")
     if submitted:
         if not all([name, age, mobile, email, flat, building, society, sector, consent]):
-            st.error("सभी फील्ड भरें और समर्थन दें टिक करें।")
+            st.error("Please fill in all fields and check the I support box.")
         else:
             data = {
                 "name": name,
@@ -67,13 +69,12 @@ with st.form("support_form"):
                 "sector": sector,
                 "consent": "Yes"
             }
-            script_url = 'https://script.google.com/macros/s/AKfycbyL5VUyINaVinfQfM1BvxJv7zJafBYxshYB7mN38cMzW7lVp_GXXvDvAOKbpfkqt_yT5Q/exec'
+            script_url = 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL'
             try:
                 res = requests.post(script_url, data=data)
                 if res.status_code == 200:
-                    st.success("धन्यवाद! आपका समर्थन दर्ज किया गया है।")
+                    st.success("Thank you! Your support has been recorded.")
                 else:
-                    st.error(f"Submission failed! Status: {res.status_code}")
+                    st.error(f"Submission failed with status: {res.status_code}")
             except Exception as e:
-                st.error(f"Error: {str(e)}")
-
+                st.error(f"An error occurred: {e}")
